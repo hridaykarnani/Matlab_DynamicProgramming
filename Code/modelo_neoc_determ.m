@@ -8,6 +8,7 @@
 % iteraciones de la VF y de las funciones de politica. 
 
 %% Parametros
+clear;clc
 beta=0.95;
 alpha=0.33;
 delta=0.1;
@@ -24,6 +25,7 @@ nK=100; % numero de puntos en la grilla
 Kgrid = linspace(0.1,2*Kee,nK); % grilla entre 0.1 y 2*Kee, con 100 ptos
 
 % Pregunta 3
+V0 = zeros(nK,1);
 % Iteracion de la funcion valor, partiendo con cualquier guess
 % Antes de iterar la funcion valor, definimos una matriz de consumos que
 % depende de todas las combis de K y K' y la utilidad dada por esas combis
@@ -99,7 +101,7 @@ ylabel('K policy','interpret','latex');
 title('Titulo');
 hold off;
 
-Cpol = Kgrid.^alpha + (1-delta)*Kgrid; % encontramos fn de pol de C
+Cpol = Kgrid.^alpha + Kpol + (1-delta)*Kgrid; % encontramos fn de pol de C
 subplot(2,2,3) % tercer grafico de la figura con 2 filas y 2 columnas
 plot(Kgrid,Cpol) % graficamos grilla de K contra C
 xlabel('$K_t$','interpreter','latex')
@@ -152,7 +154,7 @@ addpath('base_funciones')
 % con la funcion logramos replicar lo que ya encontramos arriba. Tambien
 % comparamos tiempo de ejecucion:
 beta=0.95;alpha=0.33;delta=0.1;sigma=2; % BASELINE
-[Kpol,Kgrid,Kee,V] = VFI(beta,alpha,delta,sigma,tol);
+[Kpol,Kgrid,Kee,V] = VFI_Neoc_Deterministico(beta,alpha,delta,sigma,tol);
 % Graficamos funcion valor
 plot(Kgrid,V); % graficamos la grilla de K contra la funcion valor
 xlabel('$K_t$','interpreter','latex');
@@ -161,7 +163,7 @@ title('Funcion Valor');
 
 % Pregunta 5.a.
 beta=0.95;alpha=0.66;delta=0.1;sigma=2; % solo duplicamos alpha
-[KpolA,KgridA,KeeA,VA] = VFI(beta,alpha,delta,sigma,tol);
+[KpolA,KgridA,KeeA,VA] = VFI_Neoc_Deterministico(beta,alpha,delta,sigma,tol);
 % Graficamos funcion valor
 plot(KgridA,VA); % graficamos la grilla de K contra la funcion valor
 xlabel('$K_t$','interpreter','latex');
@@ -170,38 +172,9 @@ title('Funcion Valor');
 
 % Pregunta 5.b.
 beta=0.95;alpha=0.33;delta=0.1;sigma=5; % solo aumentamos sigma
-[Kpol5B,Kgrid5B,Kee5B,V5B] = VFI(beta,alpha,delta,sigma,tol);
+[Kpol5B,Kgrid5B,Kee5B,V5B] = VFI_Neoc_Deterministico(beta,alpha,delta,sigma,tol);
 % Graficamos funcion valor
 plot(Kgrid5B,V5B); % graficamos la grilla de K contra la funcion valor
 xlabel('$K_t$','interpreter','latex');
 ylabel('Value function','interpret','latex');
 title('Funcion Valor');
-
-
-% Pregunta 6
-beta=0.95;alpha=0.33;delta=1;sigma=1; % cambiamos delta y sigma
-[Kpol6,Kgrid6,Kee6,V6] = VFI(beta,alpha,delta,sigma,tol);
-
-% Graficamos funcion valor
-subplot(2,2,1)
-plot(Kgrid6,V6); % graficamos la grilla de K contra la funcion valor
-xlabel('$K_t$','interpreter','latex');
-ylabel('Value function','interpret','latex');
-title('Titulo');
-
-subplot(2,2,2) % 2do grafico de la figura q tendra 2 filas y 2 columnas
-plot(Kgrid6,Kpol6); % graficamos grilla de K contra la funcion de politica de K
-hold on
-plot(Kgrid6,Kgrid6,'r')
-xlabel('$K_t$','interpreter','latex')
-ylabel('K policy','interpret','latex');
-title('Titulo');
-hold off;
-
-Cpol6 = Kgrid6.^alpha + (1-delta)*Kgrid6; % encontramos fn de pol de C
-subplot(2,2,3) % tercer grafico de la figura con 2 filas y 2 columnas
-plot(Kgrid6,Cpol6) % graficamos grilla de K contra C
-xlabel('$K_t$','interpreter','latex')
-ylabel('C','interpret','latex');
-title('Titulo');
-hold off;

@@ -29,6 +29,7 @@ n = 50; % generaremos 50 posibles salarios
 w_min = 5;
 w_max = 30;
 w = linspace(w_min, w_max, n+1)'; % generamos grilla de salarios posibles
+plot(w,q)
 
 % Valores iniciales de la función de valor para cada valor de la grilla
 % (comenzando con todos los salarios aceptados)
@@ -36,10 +37,12 @@ v = w ./ (1 - beta);
 % Iteración de la función de valor
 num_iteraciones = 1000; % Número máximo de iteraciones
 tolerancia = 1e-6; % Tolerancia para la convergencia
+
 figure;hold on; % haremos una figura de algunas iteraciones
 for iter = 1:num_iteraciones
     % Calcular los valores de aceptar y rechazar para cada salario
     valores_accion = zeros(n+1, 2); % Inicializar matriz de valores de acción
+
     for i = 1:(n+1) % aca iteramos la funcion valor: [acepta,rechaza]
                     % para cada posible salario que pueda extraer
         valores_accion(i, :) = [w(i) / (1 - beta), c + beta * sum(v .* q)];
